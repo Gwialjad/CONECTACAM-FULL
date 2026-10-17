@@ -1,0 +1,13 @@
+# Handle line endings automatically for all text files
+* text=auto
+
+# Explicitly declare Swift and Xcode files as text and force LF
+*.swift text eol=lf
+*.storyboard text eol=lf
+*.plist text eol=lf
+*.entitlements text eol=lf
+
+# Keep Xcode project files intact
+*.pbxproj text eol=lf
+*.xcworkspacedata text eol=lf
+*.xcscheme text eol=lf
