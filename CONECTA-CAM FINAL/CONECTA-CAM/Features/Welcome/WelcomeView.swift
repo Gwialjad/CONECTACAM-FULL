@@ -59,7 +59,7 @@ struct WelcomeView: View {
                         .frame(minHeight: 44)
                 }
                 .accessibilityLabel("Personalizar perfil")
-                .accessibilityHint("Cambia tu nombre y tu personaje")
+                .accessibilityHint("Cambia tu nombre.")
 
                 Button {
                     Haptics.impact(.light)

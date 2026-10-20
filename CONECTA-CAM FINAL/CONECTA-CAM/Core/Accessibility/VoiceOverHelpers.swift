@@ -9,10 +9,3 @@ import SwiftUI
 func announce(_ message: String) {
     AccessibilityNotification.Announcement(message).post()
 }
-
-/// Nombre hablado de cada personaje (VoiceOver leería el emoji de forma confusa).
-let avatarNames: [String: String] = [
-    "🦖": "Dinosaurio", "🐱": "Gato", "🐶": "Perro", "🦊": "Zorro",
-    "🐼": "Panda", "🐸": "Rana", "🦄": "Unicornio", "🚀": "Cohete"
-]
-func avatarName(_ emoji: String) -> String { avatarNames[emoji] ?? "Personaje" }

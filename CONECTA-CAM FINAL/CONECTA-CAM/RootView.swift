@@ -5,7 +5,7 @@
 
 import SwiftUI
 
-enum Route { case welcome, menu, activities, diary, goals }
+enum Route { case welcome, characters, menu, activities, diary, goals }
 
 struct RootView: View {
     @State private var route: Route = .welcome
@@ -14,7 +14,10 @@ struct RootView: View {
         ZStack {
             switch route {
             case .welcome:
-                WelcomeView(onPlay: { route = .menu })
+                WelcomeView(onPlay: { route = .characters })
+            case .characters:
+                CharacterSelectionView(onContinue: { route = .menu },
+                                       onBack: { route = .welcome })
             case .menu:
                 MenuView(go: { route = $0 }, onClose: { route = .welcome })
             case .activities:

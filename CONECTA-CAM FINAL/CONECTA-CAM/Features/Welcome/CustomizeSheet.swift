@@ -5,10 +5,10 @@
 
 import SwiftUI
 
+/// Ahora solo cambia el nombre. El personaje se elige en la pantalla "Elige a tu amigo".
 struct CustomizeSheet: View {
     @EnvironmentObject var store: AppStore
     @Environment(\.dismiss) private var dismiss
-    private let avatars = ["🦖", "🐱", "🐶", "🦊", "🐼", "🐸", "🦄", "🚀"]
 
     var body: some View {
         NavigationStack {
@@ -17,26 +17,6 @@ struct CustomizeSheet: View {
                     TextField("Nombre", text: $store.profile.name)
                         .accessibilityLabel("Mi nombre")
                         .accessibilityHint("Escribe tu nombre")
-                }
-                Section("Mi personaje") {
-                    LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 4), spacing: 16) {
-                        ForEach(avatars, id: \.self) { a in
-                            // Antes era un Text con onTapGesture (VoiceOver no lo detectaba como botón).
-                            Button {
-                                Haptics.selection()
-                                store.profile.avatar = a
-                            } label: {
-                                Text(a).font(.system(size: 60))
-                                    .padding(8)
-                                    .frame(minWidth: 60, minHeight: 60)
-                                    .background(RoundedRectangle(cornerRadius: 16)
-                                        .fill(store.profile.avatar == a ? Color.camGreen.opacity(0.4) : .clear))
-                            }
-                            .buttonStyle(.plain)
-                            .accessibilityLabel(avatarName(a))
-                            .accessibilityAddTraits(store.profile.avatar == a ? .isSelected : [])
-                        }
-                    }
                 }
             }
             .navigationTitle("Personalizar")

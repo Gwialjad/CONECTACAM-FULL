@@ -10,6 +10,8 @@ struct MenuView: View {
     let onClose: () -> Void
     @EnvironmentObject var store: AppStore
 
+    private var friend: Friend { Friend.with(id: store.profile.avatar) }
+
     var body: some View {
         ZStack {
             Color.camBlue.ignoresSafeArea()
@@ -30,10 +32,15 @@ struct MenuView: View {
                         }
                         RoundedRectangle(cornerRadius: 50).fill(.white)
                             .frame(width: 420, height: 420)
-                            .overlay(Text(store.profile.avatar).font(.system(size: 220)))
+                            .overlay(
+                                Image(friend.imageName)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .padding(50)
+                            )
                             .padding(.trailing, 30)
                             .accessibilityElement(children: .ignore)
-                            .accessibilityLabel("Tu personaje: \(avatarName(store.profile.avatar))")
+                            .accessibilityLabel("Tu personaje: \(friend.name)")
                             .accessibilitySortPriority(-1)
                     }
                 }
