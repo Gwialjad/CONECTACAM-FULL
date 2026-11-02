@@ -12,6 +12,7 @@ struct AccessibilitySheet: View {
     @Environment(\.accessibilityVoiceOverEnabled) private var voiceOver
     @AppStorage(AccessPrefs.textSizeKey) private var textSizeIndex = 0
     @AppStorage(Haptics.enabledKey) private var hapticsOn = true
+    @AppStorage(MusicPlayer.enabledKey) private var musicOn = true
 
     var body: some View {
         NavigationStack {
@@ -63,6 +64,19 @@ struct AccessibilitySheet: View {
                     }
                     .disabled(!hapticsOn)
                     Text("La vibración solo se siente en un iPad físico, no en el simulador.")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                }
+
+                Section("Música") {
+                    Toggle("Música de fondo", isOn: $musicOn)
+                        .onChange(of: musicOn) { _, on in
+                            MusicPlayer.shared.setEnabled(on)
+                        }
+                    Text("La música suena bajito para no tapar las voces. También baja o se apaga con el volumen del iPad.")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                    Text("Música: «Naturally» de Pufino (freetouse.com)")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                 }
