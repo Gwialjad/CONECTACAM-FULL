@@ -5,17 +5,18 @@
 
 import SwiftUI
 
-/// Exige al menos 2 jugadores distintos antes de empezar.
+/// Pide los nombres de los 2 jugadores (distintos y no vacíos) antes de empezar.
 struct PlayerSetupView: View {
     @EnvironmentObject var store: AppStore
     let onStart: ([String]) -> Void
-    @State private var names: [String] = []
+    @State private var names: [String] = ["", ""]
 
     private var cleaned: [String] {
         var seen = Set<String>()
         return names.map { $0.trimmingCharacters(in: .whitespaces) }
             .filter { !$0.isEmpty && seen.insert($0.lowercased()).inserted }
     }
+    private var ready: Bool { cleaned.count == Game.playerCount }
 
     var body: some View {
         ScrollView {
@@ -23,7 +24,7 @@ struct PlayerSetupView: View {
                 Text("¿Quiénes van a jugar?")
                     .camFont(40, .heavy).foregroundStyle(.white)
                     .accessibilityAddTraits(.isHeader)
-                Text("Se necesitan mínimo \(Game.minPlayers) personas")
+                Text("Este juego es para \(Game.playerCount) personas")
                     .camFont(24).foregroundStyle(.white.opacity(0.9))
 
                 VStack(spacing: 12) {
@@ -34,18 +35,6 @@ struct PlayerSetupView: View {
                             .background(RoundedRectangle(cornerRadius: 16).fill(.white))
                             .accessibilityLabel("Nombre del jugador \(i + 1)")
                             .accessibilityHint("Escribe el nombre de quien va a jugar")
-                    }
-                    if names.count < Game.maxPlayers {
-                        Button {
-                            Haptics.selection()
-                            names.append("")
-                        } label: {
-                            Label("Agregar jugador", systemImage: "plus.circle.fill")
-                                .camFont(26, .bold)
-                                .foregroundStyle(.white)
-                                .frame(minHeight: 44)
-                        }
-                        .accessibilityHint("Añade un campo para otro jugador. Máximo \(Game.maxPlayers).")
                     }
                 }
                 .frame(maxWidth: 600)
@@ -58,17 +47,17 @@ struct PlayerSetupView: View {
                         .camFont(36, .heavy)
                         .foregroundStyle(.white)
                         .padding(.horizontal, 60).padding(.vertical, 20)
-                        .background(Capsule().fill(cleaned.count >= Game.minPlayers ? Color.camGreen : .gray))
+                        .background(Capsule().fill(ready ? Color.camGreen : .gray))
                 }
-                .disabled(cleaned.count < Game.minPlayers)
+                .disabled(!ready)
                 .accessibilityLabel("Empezar actividad")
-                .accessibilityHint(cleaned.count >= Game.minPlayers
+                .accessibilityHint(ready
                                    ? "Comienza el juego"
-                                   : "Escribe al menos \(Game.minPlayers) nombres distintos para activar este botón")
+                                   : "Escribe los nombres de los 2 jugadores, distintos entre sí, para activar este botón")
             }
             .padding(.vertical, 12)
             .frame(maxWidth: .infinity)
         }
-        .onAppear { if names.isEmpty { names = [store.profile.name, ""] } }
+        .onAppear { if names[0].isEmpty { names[0] = store.profile.name } }
     }
 }

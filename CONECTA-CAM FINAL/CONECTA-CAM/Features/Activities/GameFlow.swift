@@ -24,7 +24,7 @@ struct GameFlow: View {
                         switch game {
                         case .story: StoryGame(players: players, onFinish: finish)
                         case .questions: QuestionsGame(players: players, onFinish: finish)
-                        case .teamHold: TeamHoldGame(players: players, onFinish: finish)
+                        case .bonus: BonusGame(players: players, onFinish: finish)
                         }
                     } else {
                         PlayerSetupView { players = $0 }

@@ -95,4 +95,12 @@ final class AppStore: ObservableObject {
         for s in sessions { days.insert(cal.startOfDay(for: s.date)) }
         return days.filter { $0 >= from && $0 <= today }.count
     }
+
+    /// Las 3 metas de la pantalla Metas están cumplidas. Desbloquea el juego especial.
+    /// (Aquí se cambiarán las condiciones cuando se modifiquen las métricas.)
+    var goalsComplete: Bool {
+        peopleCount >= goals.people
+            && weekStreak >= goals.streak
+            && groupsCount >= goals.groups
+    }
 }
