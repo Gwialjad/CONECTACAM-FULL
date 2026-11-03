@@ -96,11 +96,25 @@ final class AppStore: ObservableObject {
         return days.filter { $0 >= from && $0 <= today }.count
     }
 
-    /// Las 3 metas de la pantalla Metas están cumplidas. Desbloquea el juego especial.
-    /// (Aquí se cambiarán las condiciones cuando se modifiquen las métricas.)
+    // MARK: - Metas para desbloquear el juego especial
+
+    /// Juegos que hay que completar al menos una vez (todos menos el juego especial).
+    var requiredGames: [Game] { Game.allCases.filter { !$0.needsUnlock } }
+
+    /// Meta 1: cuántos de esos juegos ya se completaron, y cuántos hacen falta.
+    var gamesCompleted: Int {
+        let played = Set(sessions.map(\.gameID))
+        return requiredGames.filter { played.contains($0.rawValue) }.count
+    }
+    var gamesGoal: Int { requiredGames.count }
+
+    /// Meta 2: días en los que se escribió en el diario, y cuántos hacen falta.
+    var diaryEntries: Int { entries.count }
+    var diaryGoal: Int { 1 }
+
+    /// Las metas están cumplidas: se desbloquea el juego especial.
+    /// (Aquí se cambiarán las condiciones cuando lleguen los juegos de 3 jugadores.)
     var goalsComplete: Bool {
-        peopleCount >= goals.people
-            && weekStreak >= goals.streak
-            && groupsCount >= goals.groups
+        gamesCompleted >= gamesGoal && diaryEntries >= diaryGoal
     }
 }
