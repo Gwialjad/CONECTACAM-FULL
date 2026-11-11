@@ -35,14 +35,34 @@ struct CharacterSelectionView: View {
                     }
                     .padding(.top, 50)
 
-                    LazyVGrid(columns: columns, spacing: 22) {
+                     LazyVGrid(columns: columns, spacing: 22) {
                         ForEach(Friend.all) { friend in
-                            FriendCard(friend: friend, isSelected: friend.id == selected.id) {
+
+                            FriendCard(
+
+                                friend: friend,
+
+                                isSelected: friend.id == selected.id,
+
+                                isTaken: false,
+
+                                takenBy: nil,
+
+                                imageHeight: 150
+
+                            ) {
+
                                 Haptics.selection()
+
                                 store.profile.avatar = friend.id
+
                             }
+
                         }
-                    }
+
+                    } 
+
+
                     .frame(maxWidth: 1000)
                     .padding(.horizontal, 40)
                     .padding(.bottom, 20)

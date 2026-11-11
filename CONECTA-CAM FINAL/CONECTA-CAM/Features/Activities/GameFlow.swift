@@ -56,7 +56,7 @@ struct GameFlow: View {
             switch game {
             case .story: StoryGame(players: players, onFinish: finish)
             case .questions: QuestionsGame(players: players, onFinish: finish)
-            case .bonus: BonusGame(players: players, onFinish: finish)
+            case .bonus: CarGame(players: players, onFinish: finish)
             }
         }
         // Los juegos pueden leer los personajes con @Environment(\.gameFriends)
