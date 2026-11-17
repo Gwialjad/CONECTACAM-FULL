@@ -21,11 +21,20 @@ struct GameFlow: View {
     /// Personajes ya elegidos, en el mismo orden que `players`.
     private var chosen: [Friend] { [firstFriend] + others }
 
+    /// "Historia en cadena" dibuja su propia pantalla completa (con su botón de salir),
+    /// así que mientras se juega no se muestra la cinta de arriba.
+    private var showsFullScreenGame: Bool {
+        guard game == .story, !finished, let players else { return false }
+        return chosen.count >= players.count
+    }
+
     var body: some View {
         ZStack {
             Color.camBlue.ignoresSafeArea()
             VStack {
-                ScreenHeader(title: game.title.uppercased(), onClose: onExit)
+                if !showsFullScreenGame {
+                    ScreenHeader(title: game.title.uppercased(), onClose: onExit)
+                }
                 Group {
                     if finished {
                         FinishedView(onExit: onExit)
@@ -46,7 +55,7 @@ struct GameFlow: View {
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
-            .padding(.top, 20)
+            .padding(.top, showsFullScreenGame ? 0 : 20)
         }
     }
 
@@ -54,7 +63,7 @@ struct GameFlow: View {
     private func gameView(_ players: [String]) -> some View {
         Group {
             switch game {
-            case .story: StoryGame(players: players, onFinish: finish)
+            case .story: StoryGame(players: players, onFinish: finish, onExit: onExit)
             case .questions: QuestionsGame(players: players, onFinish: finish)
             case .bonus: CarGame(players: players, onFinish: finish)
             }
