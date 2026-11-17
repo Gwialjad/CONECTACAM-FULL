@@ -185,7 +185,7 @@ struct CarGame: View {
                 }
 
                 // Carro compartido
-                Image("car_blue")
+                Image("car")
                     .resizable()
                     .scaledToFit()
                     .frame(width: 145, height: 95)

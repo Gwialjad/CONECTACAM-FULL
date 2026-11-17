@@ -29,7 +29,7 @@ enum Game: String, CaseIterable, Identifiable {
     var iconName: String {
         switch self {
         case .story: return "game_story"
-        case .questions: return "game_questions"
+        case .questions: return "games_questions"
         case .bonus: return "game_bonus_locked"
         }
     }
