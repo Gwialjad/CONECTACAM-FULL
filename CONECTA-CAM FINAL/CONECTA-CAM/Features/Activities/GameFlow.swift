@@ -21,10 +21,10 @@ struct GameFlow: View {
     /// Personajes ya elegidos, en el mismo orden que `players`.
     private var chosen: [Friend] { [firstFriend] + others }
 
-    /// "Historia en cadena" dibuja su propia pantalla completa (con su botón de salir),
+    /// "Historia en cadena" y la carrera dibujan su propia pantalla completa (con su botón de salir),
     /// así que mientras se juega no se muestra la cinta de arriba.
     private var showsFullScreenGame: Bool {
-        guard game == .story, !finished, let players else { return false }
+        guard game == .story || game == .bonus, !finished, let players else { return false }
         return chosen.count >= players.count
     }
 
@@ -65,7 +65,7 @@ struct GameFlow: View {
             switch game {
             case .story: StoryGame(players: players, onFinish: finish, onExit: onExit)
             case .questions: QuestionsGame(players: players, onFinish: finish)
-            case .bonus: CarGame(players: players, onFinish: finish)
+            case .bonus: CarGame(players: players, onFinish: finish, onExit: onExit)
             }
         }
         // Los juegos pueden leer los personajes con @Environment(\.gameFriends)
